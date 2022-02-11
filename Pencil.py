@@ -1,5 +1,6 @@
 class Pencil:
 
+    # Constructor to initialise the attributes of Pencil class
     def __init__(self, init_point_durability, length, eraser_durability):
         self.init_point_durability = init_point_durability
         self.point_durability = init_point_durability
@@ -12,14 +13,15 @@ class Pencil:
         for character in input_text:
             idx = len(paper.text)
             durability_reduction = self.eval_point_durability(character)
+            # If there is enough durability, insert the characters one by one
             if self.point_durability - durability_reduction >= 0:
                 self.insert_character(paper, character, idx)
                 self.point_durability -= durability_reduction
-            else:
+            else: # Otherwise insert space
                 self.insert_character(paper, " ", idx)
 
     def sharpen(self):
-        """When a pencil is sharpened, it regains its initial point durability
+        """When a pencil is sharpened, it will regain its initial point durability
         and length of the pencil will be reduced by one unit."""
 
         if self.pencil_length > 0:
@@ -46,13 +48,13 @@ class Pencil:
             self.eraser_durability -= len(text_to_erase)
 
     def edit(self, paper, new_text, index):
-        """Edits existing text on a paper."""
+        """Edits the text on paper."""
         for character in new_text:
             self.edit_character(paper, character, index)
             index += 1
 
     def edit_character(self, paper, character, index):
-        """Edits a single `character` at specifed `index` in the `paper` text."""
+        """Edits a character in the reuired index of the text."""
 
         durability_reduction = self.eval_point_durability(character)
         if self.point_durability - durability_reduction >= 0:
@@ -68,10 +70,12 @@ class Pencil:
 
         if character.islower(): # For lower case, reduce the durability by 1
             return 1
-        else: # For upper case, reduce the durability by 2
+        elif character.isupper(): # For upper case, reduce the durability by 2
             return 2
+        else:
+            return 0
 
     def insert_character(self, paper, character, idx):
         """Function to insert a single character at a specified index of the text in paper."""
 
-        paper.text = (paper.text[:idx] + character + paper.text[idx+1:])
+        paper.text = paper.text[:idx] + character + paper.text[idx+1:]
